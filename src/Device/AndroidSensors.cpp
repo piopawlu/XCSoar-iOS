@@ -129,6 +129,10 @@ DeviceDescriptor::OnMagneticFieldSensor([[maybe_unused]] float h_x, [[maybe_unus
   // TODO
 }
 
+#endif
+
+#if defined ANDROID || (defined __APPLE__ && defined TARGET_OS_IPHONE && TARGET_OS_IPHONE)
+
 /**
  * Helper function for
  * Java_org_xcsoar_NonGPSSensors_setBarometricPressure: Given a
@@ -153,6 +157,7 @@ ComputeNoncompVario(const double pressure, const double d_pressure)
   return FACTOR * pow(pressure, EXPONENT) * d_pressure;
 }
 
+
 void
 DeviceDescriptor::OnBarometricPressureSensor(float pressure,
                                              float sensor_noise_variance) noexcept
@@ -174,6 +179,10 @@ DeviceDescriptor::OnBarometricPressureSensor(float pressure,
 
   e.Commit();
 }
+
+#endif
+
+#ifdef __ANDROID__
 
 void
 DeviceDescriptor::OnPressureAltitudeSensor(float altitude) noexcept

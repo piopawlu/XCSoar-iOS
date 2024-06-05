@@ -24,6 +24,6 @@
 
 #endif
 
-#include "MakeResource.hpp"
+#include <MakeResource.hpp>
 
 #undef MAKE_RESOURCE

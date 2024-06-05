@@ -42,12 +42,28 @@ class NativeToolchain:
         self.env = dict(os.environ)
 
 class Toolchain:
-    def __init__(self, top_path: str, lib_path: str,
-                 tarball_path: str, src_path: str, build_path: str, install_prefix: str,
-                 host_triplet: str, arch_cflags: str, cppflags: str,
-                 arch_ldflags: str,
-                 cc: str, cxx: str, ar: str, arflags: str,
-                 ranlib: str, strip: str, windres: str):
+
+    def __init__(
+        self,
+        top_path: str,
+        lib_path: str,
+        tarball_path: str,
+        src_path: str,
+        build_path: str,
+        install_prefix: str,
+        host_triplet: str,
+        arch_cflags: str,
+        cppflags: str,
+        arch_ldflags: str,
+        cc: str,
+        cxx: str,
+        ar: str,
+        arflags: str,
+        ranlib: str,
+        strip: str,
+        windres: str,
+        is_ios: bool,
+    ):
         self.tarball_path = tarball_path
         self.src_path = src_path
         self.build_path = build_path
@@ -59,7 +75,8 @@ class Toolchain:
         self.is_aarch64 = host_triplet.startswith('aarch64')
         self.is_windows = 'mingw32' in host_triplet
         self.is_android = '-android' in host_triplet
-        self.is_darwin = '-darwin' in host_triplet
+        self.is_darwin = "-darwin" in host_triplet or "-apple-ios" in host_triplet
+        self.is_ios = is_ios
 
         self.cc = cc
         self.cxx = cxx
@@ -97,5 +114,6 @@ class Toolchain:
         self.env['QEMU_GUEST_BASE'] = '42'
 
         self.native = NativeToolchain(lib_path, self)
+
 
 AnyToolchain = Union[Toolchain, NativeToolchain]

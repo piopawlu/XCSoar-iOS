@@ -14,9 +14,15 @@ def __write_cmake_compiler(f: TextIO, language: str, compiler: str) -> None:
         compiler = s[1]
     print(f'set(CMAKE_{language}_COMPILER {compiler})', file=f)
 
-def __write_cmake_toolchain_file(f: TextIO, toolchain: Toolchain, no_isystem: bool) -> None:
+
+def __write_cmake_toolchain_file(
+    f: TextIO, toolchain: Toolchain, no_isystem: bool, wants_ios_sys_name: bool = False
+) -> None:
     if toolchain.is_darwin:
-        cmake_system_name = 'Darwin'
+        if wants_ios_sys_name:
+            cmake_system_name = "iOS"
+        else:
+            cmake_system_name = "Darwin"
     elif toolchain.is_windows:
         cmake_system_name = 'Windows'
     else:
@@ -71,6 +77,7 @@ set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)
 """)
 
+
 def configure(toolchain: AnyToolchain, src: str, build: str, args: list[str]=[], env: Optional[Mapping[str, str]]=None) -> None:
     cross_args: list[str] = []
 
@@ -105,7 +112,9 @@ def configure(toolchain: AnyToolchain, src: str, build: str, args: list[str]=[],
 
         cmake_toolchain_file = os.path.join(build, 'cmake_toolchain_file')
         with open(cmake_toolchain_file, 'w') as f:
-            __write_cmake_toolchain_file(f, toolchain, no_isystem)
+            __write_cmake_toolchain_file(
+                f, toolchain, no_isystem, toolchain.is_ios and src.find("SDL") != -1
+            )
 
         configure.append('-DCMAKE_TOOLCHAIN_FILE=' + cmake_toolchain_file)
 

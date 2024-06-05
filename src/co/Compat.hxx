@@ -12,13 +12,24 @@
 /* the standard header is also missing in the Android NDK and on Apple
    Xcode, even though LLVM upstream has them */
 
+#ifdef __APPLE__
+#include <coroutine>
+#else
 #include <experimental/coroutine>
+#endif
 
 namespace std {
+#ifndef __APPLE__
 using std::experimental::coroutine_handle;
 using std::experimental::suspend_never;
 using std::experimental::suspend_always;
 using std::experimental::noop_coroutine;
+#else
+using std::coroutine_handle;
+using std::suspend_never;
+using std::suspend_always;
+using std::noop_coroutine;
+#endif
 }
 
 #else /* not clang */

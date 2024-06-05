@@ -6,6 +6,7 @@
 class SensorListener;
 
 #import <CoreLocation/CoreLocation.h>
+#import <CoreMotion/CoreMotion.h>
 
 @interface LocationDelegate : NSObject <CLLocationManagerDelegate>
 {
@@ -23,6 +24,7 @@ class InternalSensors {
   SensorListener &listener;
   CLLocationManager *location_manager;
   LocationDelegate *location_delegate;
+  CMAltimeter *altimeter;
 
   void Init();
   void Deinit();

@@ -4,11 +4,28 @@ import os, os.path
 import re
 import sys
 
-if len(sys.argv) != 13:
-    print("Usage: build.py LIB_PATH HOST_TRIPLET ARCH_CFLAGS CPPFLAGS ARCH_LDFLAGS CC CXX AR ARFLAGS RANLIB STRIP WINDRES", file=sys.stderr)
+if len(sys.argv) != 14:
+    print(
+        "Usage: build.py LIB_PATH HOST_TRIPLET ARCH_CFLAGS CPPFLAGS ARCH_LDFLAGS CC CXX AR ARFLAGS RANLIB STRIP WINDRES IS_IOS",
+        file=sys.stderr,
+    )
     sys.exit(1)
 
-lib_path, host_triplet, arch_cflags, cppflags, arch_ldflags, cc, cxx, ar, arflags, ranlib, strip, windres = sys.argv[1:]
+(
+    lib_path,
+    host_triplet,
+    arch_cflags,
+    cppflags,
+    arch_ldflags,
+    cc,
+    cxx,
+    ar,
+    arflags,
+    ranlib,
+    strip,
+    windres,
+    is_ios,
+) = sys.argv[1:]
 
 # the path to the XCSoar sources
 xcsoar_path = os.path.abspath(os.path.join(os.path.dirname(sys.argv[0]) or '.', '..'))
@@ -27,11 +44,26 @@ if 'MAKEFLAGS' in os.environ:
     del os.environ['MAKEFLAGS']
 
 from build.toolchain import Toolchain, NativeToolchain
-toolchain = Toolchain(xcsoar_path, lib_path,
-                      tarball_path, src_path, build_path, install_prefix,
-                      host_triplet,
-                      arch_cflags, cppflags, arch_ldflags, cc, cxx, ar, arflags,
-                      ranlib, strip, windres)
+toolchain = Toolchain(
+    xcsoar_path,
+    lib_path,
+    tarball_path,
+    src_path,
+    build_path,
+    install_prefix,
+    host_triplet,
+    arch_cflags,
+    cppflags,
+    arch_ldflags,
+    cc,
+    cxx,
+    ar,
+    arflags,
+    ranlib,
+    strip,
+    windres,
+    is_ios,
+)
 
 # a list of third-party libraries to be used by XCSoar
 from build.libs import *
@@ -54,6 +86,13 @@ if toolchain.is_windows:
     # it.
     toolchain.cppflags += ' -D_FORTIFY_SOURCE=0'
 elif toolchain.is_darwin:
+
+    if toolchain.is_ios:
+        for i, v in enumerate(sdl2.configure_args):
+            if v == "-DSDL_JOYSTICK=OFF":
+                sdl2.configure_args[i] = "-DSDL_JOYSTICK=ON"
+        sdl2.configure_args.append("-DIOS=YES")
+
     thirdparty_libs = [
         zlib,
         libfmt,
@@ -107,5 +146,5 @@ else:
 
 # build the third-party libraries
 for x in thirdparty_libs:
-    if not x.is_installed(toolchain):
+    if not x.is_installed(toolchain) or x == sdl2:
         x.build(toolchain)

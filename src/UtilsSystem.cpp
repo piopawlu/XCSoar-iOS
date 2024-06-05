@@ -10,6 +10,10 @@
 #include "Android/Main.hpp"
 #endif
 
+#ifdef __APPLE__
+#include <SDL2/SDL.h>
+#endif
+
 #include <tchar.h>
 
 #ifdef _WIN32
@@ -17,7 +21,7 @@
 #include <winuser.h>
 #endif
 
-#ifndef ANDROID
+#if !defined ANDROID && !defined __APPLE__
 
 [[gnu::const]]
 static PixelSize
@@ -44,6 +48,17 @@ SystemWindowSize() noexcept
 {
 #ifdef ANDROID
   return native_view->GetSize();
+#elif __APPLE__
+    #include <TargetConditionals.h>
+    #if TARGET_OS_IPHONE
+        SDL_DisplayMode dm;
+        SDL_GetDesktopDisplayMode(0, &dm);
+        return PixelSize{ dm.w, dm.h};
+    #else
+        return PixelSize{ CommandLine::width, CommandLine::height } + GetWindowDecorationOverhead();
+    #endif
+    
+    
 #else
   /// @todo implement this properly for SDL/UNIX
   return PixelSize{ CommandLine::width, CommandLine::height } + GetWindowDecorationOverhead();

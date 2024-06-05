@@ -7,25 +7,29 @@ IPA_TMPDIR = $(TARGET_OUTPUT_DIR)/ipa
 ifeq ($(TESTING),y)
 IPA_NAME = xcsoar-testing.ipa
 IOS_APP_DIR_NAME = XCSoar.testing.app
-IOS_APP_BUNDLE_INENTIFIER = XCSoar-testing
+IOS_APP_BUNDLE_INENTIFIER = net.piopawlu.xcsoar
 IOS_APP_DISPLAY_NAME = XCSoar Testing
 IOS_ICON_SVG = $(topdir)/Data/iOS/iOS-Icon_red.svg
 IOS_SPLASH_BASE_IMG=$(DATA)/graphics/logo_red_320.png
 IOS_GRAPHICS_DIR=$(DATA)/ios-graphics-testing
+IOS_APP_VERSION="7.54"
 else
 IPA_NAME = xcsoar.ipa
 IOS_APP_DIR_NAME = XCSoar.app
-IOS_APP_BUNDLE_INENTIFIER = XCSoar
+IOS_APP_BUNDLE_INENTIFIER = net.piopawlu.xcsoar
 IOS_APP_DISPLAY_NAME = XCSoar
 IOS_ICON_SVG = $(topdir)/Data/iOS/iOS-Icon.svg
 IOS_SPLASH_BASE_IMG=$(DATA)/graphics/logo_320.png
 IOS_GRAPHICS_DIR=$(DATA)/ios-graphics
+IOS_APP_VERSION="7.54"
 endif
 
 ifeq ($(findstring aarch64,$(HOST_TRIPLET)),aarch64)
 IOS_INFO_PLIST_ARCH_PLACEHOLDER = arm64
 else ifeq ($(findstring armv7,$(HOST_TRIPLET)),armv7)
 IOS_INFO_PLIST_ARCH_PLACEHOLDER = armv7
+else ifeq ($(findstring arm64-apple-ios,$(HOST_TRIPLET)),arm64-apple-ios)
+IOS_INFO_PLIST_ARCH_PLACEHOLDER = arm64
 else
 $(error Could not determine correct architecture identifier for Info.plist)
 endif
@@ -96,7 +100,7 @@ $(TARGET_OUTPUT_DIR)/Info.plist.xml: $(topdir)/Data/iOS/Info.plist.in.xml | $(TA
 		-e 's/IOS_ARCH_PLACEHOLDER/$(IOS_INFO_PLIST_ARCH_PLACEHOLDER)/g' \
 		$< > $@
 
-$(TARGET_OUTPUT_DIR)/Info.plist: $(TARGET_OUTPUT_DIR)/Info.plist.xml
+$(TARGET_OUTPUT_DIR)/Info.bak.plist: $(TARGET_OUTPUT_DIR)/Info.plist.xml
 ifeq ($(HOST_IS_DARWIN),y)
 	$(Q)plutil -convert binary1 -o $@ $<
 else
@@ -104,12 +108,12 @@ else
 endif
 
 
-$(TARGET_OUTPUT_DIR)/$(IPA_NAME): $(TARGET_BIN_DIR)/xcsoar $(TARGET_OUTPUT_DIR)/Info.plist  $(IOS_GRAPHICS)
+$(TARGET_OUTPUT_DIR)/$(IPA_NAME): $(TARGET_BIN_DIR)/xcsoar $(TARGET_OUTPUT_DIR)/Info.bak.plist  $(IOS_GRAPHICS)
 	@$(NQ)echo "  IPA     $@"
 	$(Q)rm -rf $(IPA_TMPDIR)
 	$(Q)$(MKDIR) -p $(IPA_TMPDIR)/Payload/$(IOS_APP_DIR_NAME)
 	$(Q)cp $(TARGET_BIN_DIR)/xcsoar $(IPA_TMPDIR)/Payload/$(IOS_APP_DIR_NAME)/XCSoar
-	$(Q)cp $(TARGET_OUTPUT_DIR)/Info.plist $(IPA_TMPDIR)/Payload/$(IOS_APP_DIR_NAME)
+	$(Q)cp $(TARGET_OUTPUT_DIR)/Info.bak.plist $(IPA_TMPDIR)/Payload/$(IOS_APP_DIR_NAME)/Info.plist
 	$(Q)cp $(IOS_GRAPHICS) $(IPA_TMPDIR)/Payload/$(IOS_APP_DIR_NAME)
 	$(Q)cd $(IPA_TMPDIR) && $(ZIP) -r ../$(IPA_NAME) ./*
 

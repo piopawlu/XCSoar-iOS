@@ -25,7 +25,7 @@
 #include "SensorListener.hpp"
 #endif
 
-#ifdef ANDROID
+#if defined ANDROID || (defined __APPLE__ && defined TARGET_OS_IPHONE && TARGET_OS_IPHONE)
 #include "Math/SelfTimingKalmanFilter1d.hpp"
 #include "Math/WindowFilter.hpp"
 #endif
@@ -162,6 +162,9 @@ class DeviceDescriptor final
 #ifdef ANDROID
   Java::GlobalCloseable *java_sensor = nullptr;
   Java::GlobalCloseable *second_java_sensor = nullptr;
+#endif
+        
+#if defined ANDROID || (defined __APPLE__ && defined TARGET_OS_IPHONE && TARGET_OS_IPHONE)
 
   /* We use a Kalman filter to smooth Android device pressure sensor
      noise.  The filter requires two parameters: the first is the
@@ -184,6 +187,9 @@ class DeviceDescriptor final
   static constexpr double KF_I2C_VAR_ACCEL_85 = KF_VAR_ACCEL;
 
   SelfTimingKalmanFilter1d kalman_filter{KF_MAX_DT, KF_VAR_ACCEL};
+#endif
+        
+#ifdef ANDROID
 
   double voltage_offset;
   double voltage_factor;
@@ -617,8 +623,12 @@ private:
   void OnRotationSensor(float dtheta_x, float dtheta_y,
                         float dtheta_z) noexcept override;
   void OnMagneticFieldSensor(float h_x, float h_y, float h_z) noexcept override;
+#endif
+#if defined __APPLE__ && defined TARGET_OS_IPHONE && TARGET_OS_IPHONE
   void OnBarometricPressureSensor(float pressure,
                                   float sensor_noise_variance) noexcept override;
+#endif
+#ifdef ANDROID
   void OnPressureAltitudeSensor(float altitude) noexcept override;
   void OnI2CbaroSensor(int index, int sensorType,
                        AtmosphericPressure pressure) noexcept override;

@@ -468,9 +468,9 @@ DeviceDescriptor::Open(OperationEnvironment &env)
   TCHAR buffer[64];
   LogFormat(_T("Opening device %s"), config.GetPortName(buffer, 64));
 
-#ifdef ANDROID
+#if defined ANDROID || (defined TARGET_OS_IPHONE && TARGET_OS_IPHONE==1)
   /* reset the Kalman filter */
-  kalman_filter = {KF_MAX_DT, KF_VAR_ACCEL};
+  //kalman_filter = {KF_MAX_DT, KF_VAR_ACCEL};
 #endif
 
   open_job = new OpenDeviceJob(*this);

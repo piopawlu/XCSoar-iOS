@@ -35,7 +35,7 @@
   return [date timeIntervalSinceDate: midnight];
 }
 
-#if TARGET_OS_IPHONE
+#if defined TARGET_OS_IPHONE && TARGET_OS_IPHONE
 - (void) locationManager:(CLLocationManager *)manager
     didChangeAuthorizationStatus:(CLAuthorizationStatus)status
 {
@@ -117,7 +117,7 @@ void InternalSensors::Init()
   location_manager.desiredAccuracy =
       kCLLocationAccuracyBestForNavigation;
   location_manager.delegate = location_delegate;
-#if TARGET_OS_IPHONE
+#if defined TARGET_OS_IPHONE && TARGET_OS_IPHONE
   if ([location_manager
       respondsToSelector: @selector(requestWhenInUseAuthorization)]) {
     CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
@@ -130,6 +130,49 @@ void InternalSensors::Init()
   } else {
     [location_manager startUpdatingLocation];
   }
+    
+  if([CMAltimeter isRelativeAltitudeAvailable])
+  {
+      if ([CMAltimeter respondsToSelector: @selector(authorizationStatus)]) {
+          CMAuthorizationStatus status = [CMAltimeter authorizationStatus];
+         if (status == CMAuthorizationStatusDenied) {
+              return;
+         } else if (status == CMAuthorizationStatusNotDetermined && [CMMotionActivityManager respondsToSelector:@selector(isActivityAvailable)]) {
+             CMMotionActivityManager* manager = [[CMMotionActivityManager alloc] init];
+             NSOperationQueue *queue = [[NSOperationQueue alloc] init];
+             
+             __block bool query_error = false;
+             
+             [manager queryActivityStartingFromDate: [NSDate date] toDate: [NSDate date] toQueue: queue withHandler:^(id _Nullable, NSError * _Nullable error)
+             {
+              query_error = (error != nil);
+             }];
+             
+             if (query_error) {
+                 return;
+             }
+         }
+      }
+      
+      
+      
+      altimeter = [[CMAltimeter alloc] init];
+      NSOperationQueue *queue = [[NSOperationQueue alloc] init];
+      
+      auto self = this;
+      
+      [altimeter startRelativeAltitudeUpdatesToQueue:queue withHandler:^(CMAltitudeData * _Nullable altitudeData, NSError * _Nullable error)
+      {
+          if (error) {
+            NSLog(@"%@", [error localizedDescription]);
+            return;
+          }
+          self->listener.OnBarometricPressureSensor(static_cast<float>(altitudeData.pressure.floatValue * 10.0f), 0.0f);
+      }];
+  } else {
+      altimeter = nullptr;
+  }
+    
 #else
   [location_manager startUpdatingLocation];
 #endif
@@ -138,4 +181,7 @@ void InternalSensors::Init()
 void InternalSensors::Deinit()
 {
   [location_manager stopUpdatingLocation];
+    if ( altimeter != nullptr) {
+        [altimeter stopRelativeAltitudeUpdates];
+    }
 }

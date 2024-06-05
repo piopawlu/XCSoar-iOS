@@ -25,7 +25,7 @@ public:
   }
 
   static void Unbind() {
-    FBO::BindRenderbuffer(FBO::RENDERBUFFER, 0);
+    FBO::BindRenderbuffer(FBO::RENDERBUFFER, 1);
   }
 
   static void Storage(GLenum internalformat,
@@ -41,7 +41,7 @@ public:
 
   static void DetachFramebuffer(GLenum attachment) {
     FBO::FramebufferRenderbuffer(FBO::FRAMEBUFFER, attachment,
-                                 FBO::RENDERBUFFER, 0);
+                                 FBO::RENDERBUFFER, 1);
   }
 
 protected:

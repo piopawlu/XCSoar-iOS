@@ -6,7 +6,7 @@ TARGETS = PC WIN64 \
 	ANDROID ANDROID7 ANDROID86 \
 	ANDROIDAARCH64 ANDROIDX64 \
 	ANDROIDFAT \
-	OSX64 IOS32 IOS64
+	OSX64 IOS32 IOS64 IOS64SIM
 
 ifeq ($(TARGET),)
   ifeq ($(HOST_IS_UNIX),y)
@@ -231,10 +231,13 @@ ifeq ($(TARGET),OSX64)
   TARGET_IS_DARWIN = y
   TARGET_IS_OSX = y
   OSX_MIN_SUPPORTED_VERSION = 12.0
-  HOST_TRIPLET = x86_64-apple-darwin
+  HOST_TRIPLET = aarch64-apple-darwin
   LLVM_TARGET = $(HOST_TRIPLET)
   CLANG = y
   TARGET_ARCH += -mmacosx-version-min=$(OSX_MIN_SUPPORTED_VERSION)
+  TARGET_IS_ARM = y
+  TARGET_IS_ARMHF = y
+  ASFLAGS += -arch arm64
 endif
 
 ifeq ($(TARGET),IOS32)
@@ -255,7 +258,7 @@ ifeq ($(TARGET),IOS64)
   override TARGET = UNIX
   TARGET_IS_DARWIN = y
   TARGET_IS_IOS = y
-  IOS_MIN_SUPPORTED_VERSION = 10.0
+  IOS_MIN_SUPPORTED_VERSION = 12.4
   HOST_TRIPLET = aarch64-apple-darwin
   LLVM_TARGET = $(HOST_TRIPLET)
   ifeq ($(HOST_IS_DARWIN),y)
@@ -263,6 +266,21 @@ ifeq ($(TARGET),IOS64)
   endif
   CLANG = y
   TARGET_ARCH += -miphoneos-version-min=$(IOS_MIN_SUPPORTED_VERSION) -arch arm64
+  ASFLAGS += -arch arm64
+endif
+
+ifeq ($(TARGET),IOS64SIM)
+  override TARGET = UNIX
+  TARGET_IS_DARWIN = y
+  TARGET_IS_IOS = y
+  IOS_MIN_SUPPORTED_VERSION = 12.4
+  HOST_TRIPLET =  aarch64-apple-darwin
+  LLVM_TARGET = $(HOST_TRIPLET)
+  ifeq ($(HOST_IS_DARWIN),y)
+    DARWIN_SDK ?= /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator17.4.sdk
+  endif
+  CLANG = y
+  TARGET_ARCH += -mios-simulator-version-min=$(IOS_MIN_SUPPORTED_VERSION) -arch arm64 
   ASFLAGS += -arch arm64
 endif
 

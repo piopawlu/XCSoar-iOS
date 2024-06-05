@@ -4,7 +4,8 @@
 #include "Version.hpp"
 
 #ifndef XCSOAR_VERSION
-#error Macro "XCSOAR_VERSION" is not defined.  Check build/version.mk!
+//#error Macro "XCSOAR_VERSION" is not defined.  Check build/version.mk!
+#define XCSOAR_VERSION "7.45"
 #endif
 
 #define VERSION XCSOAR_VERSION

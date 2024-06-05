@@ -4,6 +4,7 @@
 #pragma once
 
 #include "ui/opengl/SystemExt.hpp"
+#include <cstdio>
 
 /**
  * Support for OpenGL framebuffer objects (GL_*_framebuffer_object).
