@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		240963142C15A9B8000713AC /* Larus.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 240963122C15A991000713AC /* Larus.cpp */; };
 		2468B9FA2BD17FAA0043D10F /* AndroidSensors.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2468B9F92BD17FAA0043D10F /* AndroidSensors.cpp */; };
 		2468BA212BD191670043D10F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2468BA202BD191670043D10F /* Assets.xcassets */; };
 		2468BA272BD191B90043D10F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2468BA232BD191B90043D10F /* LaunchScreen.storyboard */; };
@@ -1401,6 +1402,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		240963122C15A991000713AC /* Larus.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Larus.cpp; sourceTree = "<group>"; };
+		240963132C15A991000713AC /* Larus.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Larus.hpp; sourceTree = "<group>"; };
 		244004D52BD057E700D35EAD /* XCSoar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = XCSoar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2468B9F92BD17FAA0043D10F /* AndroidSensors.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AndroidSensors.cpp; sourceTree = "<group>"; };
 		2468BA202BD191670043D10F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = Data/iOS/Assets.xcassets; sourceTree = "<group>"; };
@@ -5101,24 +5104,16 @@
 		246ABAC42BD06A9400FD3C72 /* Driver */ = {
 			isa = PBXGroup;
 			children = (
-				246ABA102BD06A9400FD3C72 /* ATR833 */,
-				246ABA162BD06A9400FD3C72 /* BlueFly */,
-				246ABA232BD06A9400FD3C72 /* CAI302 */,
-				246ABA342BD06A9400FD3C72 /* FLARM */,
-				246ABA392BD06A9400FD3C72 /* Flytec */,
-				246ABA4D2BD06A9400FD3C72 /* IMI */,
-				246ABA622BD06A9400FD3C72 /* LX */,
-				246ABA652BD06A9400FD3C72 /* ThermalExpress */,
-				246ABA6D2BD06A9400FD3C72 /* Vega */,
-				246ABA832BD06A9400FD3C72 /* Volkslogger */,
-				246ABA872BD06A9400FD3C72 /* XCTracer */,
 				246ABA882BD06A9400FD3C72 /* AirControlDisplay.cpp */,
 				246ABA892BD06A9400FD3C72 /* AirControlDisplay.hpp */,
 				246ABA8A2BD06A9400FD3C72 /* AltairPro.cpp */,
 				246ABA8B2BD06A9400FD3C72 /* AltairPro.hpp */,
+				246ABA102BD06A9400FD3C72 /* ATR833 */,
+				246ABA162BD06A9400FD3C72 /* BlueFly */,
 				246ABA8C2BD06A9400FD3C72 /* BlueFlyVario.hpp */,
 				246ABA8D2BD06A9400FD3C72 /* BorgeltB50.cpp */,
 				246ABA8E2BD06A9400FD3C72 /* BorgeltB50.hpp */,
+				246ABA232BD06A9400FD3C72 /* CAI302 */,
 				246ABA8F2BD06A9400FD3C72 /* CAI302.hpp */,
 				246ABA902BD06A9400FD3C72 /* CaiGpsNav.cpp */,
 				246ABA912BD06A9400FD3C72 /* CaiGpsNav.hpp */,
@@ -5134,23 +5129,29 @@
 				246ABA9B2BD06A9400FD3C72 /* EWMicroRecorder.hpp */,
 				246ABA9C2BD06A9400FD3C72 /* Eye.cpp */,
 				246ABA9D2BD06A9400FD3C72 /* Eye.hpp */,
+				246ABA342BD06A9400FD3C72 /* FLARM */,
 				246ABA9E2BD06A9400FD3C72 /* FLARM.hpp */,
 				246ABA9F2BD06A9400FD3C72 /* FlymasterF1.cpp */,
 				246ABAA02BD06A9400FD3C72 /* FlymasterF1.hpp */,
 				246ABAA12BD06A9400FD3C72 /* FlyNet.cpp */,
 				246ABAA22BD06A9400FD3C72 /* FlyNet.hpp */,
+				246ABA392BD06A9400FD3C72 /* Flytec */,
 				246ABAA32BD06A9400FD3C72 /* Flytec.hpp */,
 				246ABAA42BD06A9400FD3C72 /* Generic.cpp */,
 				246ABAA52BD06A9400FD3C72 /* Generic.hpp */,
 				246ABAA62BD06A9400FD3C72 /* ILEC.cpp */,
 				246ABAA72BD06A9400FD3C72 /* ILEC.hpp */,
+				246ABA4D2BD06A9400FD3C72 /* IMI */,
 				246ABAA82BD06A9400FD3C72 /* IMI.hpp */,
 				246ABAA92BD06A9400FD3C72 /* KRT2.cpp */,
 				246ABAAA2BD06A9400FD3C72 /* KRT2.hpp */,
+				240963122C15A991000713AC /* Larus.cpp */,
+				240963132C15A991000713AC /* Larus.hpp */,
 				246ABAAB2BD06A9400FD3C72 /* Leonardo.cpp */,
 				246ABAAC2BD06A9400FD3C72 /* Leonardo.hpp */,
 				246ABAAD2BD06A9400FD3C72 /* LevilAHRS_G.cpp */,
 				246ABAAE2BD06A9400FD3C72 /* LevilAHRS_G.hpp */,
+				246ABA622BD06A9400FD3C72 /* LX */,
 				246ABAAF2BD06A9400FD3C72 /* LX.hpp */,
 				246ABAB02BD06A9400FD3C72 /* NmeaOut.cpp */,
 				246ABAB12BD06A9400FD3C72 /* NmeaOut.hpp */,
@@ -5158,15 +5159,19 @@
 				246ABAB32BD06A9400FD3C72 /* OpenVario.hpp */,
 				246ABAB42BD06A9400FD3C72 /* PosiGraph.cpp */,
 				246ABAB52BD06A9400FD3C72 /* PosiGraph.hpp */,
+				246ABA652BD06A9400FD3C72 /* ThermalExpress */,
 				246ABAB62BD06A9400FD3C72 /* ThermalExpress.hpp */,
 				246ABAB72BD06A9400FD3C72 /* Vaulter.cpp */,
 				246ABAB82BD06A9400FD3C72 /* Vaulter.hpp */,
+				246ABA6D2BD06A9400FD3C72 /* Vega */,
 				246ABAB92BD06A9400FD3C72 /* Vega.hpp */,
+				246ABA832BD06A9400FD3C72 /* Volkslogger */,
 				246ABABA2BD06A9400FD3C72 /* Volkslogger.hpp */,
 				246ABABB2BD06A9400FD3C72 /* Westerboer.cpp */,
 				246ABABC2BD06A9400FD3C72 /* Westerboer.hpp */,
 				246ABABD2BD06A9400FD3C72 /* XCOM760.cpp */,
 				246ABABE2BD06A9400FD3C72 /* XCOM760.hpp */,
+				246ABA872BD06A9400FD3C72 /* XCTracer */,
 				246ABABF2BD06A9400FD3C72 /* XCTracer.hpp */,
 				246ABAC02BD06A9400FD3C72 /* XCVario.cpp */,
 				246ABAC12BD06A9400FD3C72 /* XCVario.hpp */,
@@ -10322,6 +10327,7 @@
 				246AC7AF2BD06A9400FD3C72 /* AltairPro.cpp in Sources */,
 				246AC7CB2BD06A9400FD3C72 /* BufferedPort.cpp in Sources */,
 				246AC7FF2BD06A9400FD3C72 /* ManageFlarmDialog.cpp in Sources */,
+				240963142C15A9B8000713AC /* Larus.cpp in Sources */,
 				246ACBB62BD06A9500FD3C72 /* Bitmap.cpp in Sources */,
 				246ACADD2BD06A9500FD3C72 /* Map.cpp in Sources */,
 				246AC95D2BD06A9500FD3C72 /* Units.cpp in Sources */,
